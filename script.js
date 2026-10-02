@@ -171,26 +171,15 @@ function addShop() {
 function createShopCard(shop, shopName) {
 
     shop.innerHTML = `
+    <div class="shop-header">
+        <h2 class="shop-name">${shopData.name}</h2>
 
-        <div class="shop-header">
-
-            <h2 class="shop-name">
-                ${shopName}
-            </h2>
-
-            <div class="shop-actions">
-
-                <button onclick="editShop(this)">
-                    🖍️
-                </button>
-
-                <button onclick="deleteShop(this)">
-                    🗑️
-                </button>
-
-            </div>
-
+        <div class="shop-actions">
+            <button onclick="editShop(this)">🖍️</button>
+            <button onclick="deleteShop(this)">🗑️</button>
+            <button onclick="shareShop(this)">↗️</button>
         </div>
+    </div>
 
 
         <ul>
@@ -752,4 +741,38 @@ async function shareShoppingMemo() {
 
     }
 
+}
+
+async function shareShop(button) {
+    const shop = button.closest(".shop");
+    const shopName = shop.querySelector(".shop-name").textContent;
+
+    let text = "🛒 買い物メモ\n\n";
+    text += "【" + shopName + "】\n";
+
+    shop.querySelectorAll("li").forEach(function (item) {
+        const itemName = item.querySelector(".item-name");
+
+        if (!itemName) {
+            return;
+        }
+
+        const checked = item.classList.contains("checked");
+
+        text += (checked ? "☑ " : "□ ") + itemName.textContent + "\n";
+    });
+
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: "買い物メモ",
+                text: text
+            });
+        } catch (error) {
+            console.log("共有をキャンセルしました");
+        }
+    } else {
+        navigator.clipboard.writeText(text);
+        alert("コピーしました！");
+    }
 }
