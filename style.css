@@ -1,0 +1,312 @@
+body {
+    background-color: #111;
+    color: white;
+    font-family: sans-serif;
+
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+
+/* ====================
+   2列レイアウト
+==================== */
+
+.shop-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.shop-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+/* ====================
+   店カード
+==================== */
+
+.shop {
+    background-color: white;
+    color: black;
+
+    border-radius: 30px;
+
+    padding: 20px;
+}
+
+
+/* ====================
+   店名＋ボタン
+==================== */
+
+.shop-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.shop-header h2 {
+    margin: 0;
+}
+
+.shop-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.shop-actions button {
+    border: none;
+    background: none;
+
+    padding: 2px;
+
+    font-size: 16px;
+
+    cursor: pointer;
+}
+
+
+/* ====================
+   商品リスト
+==================== */
+
+.shop ul {
+    list-style: none;
+
+    padding: 0;
+    margin: 20px 0 0;
+}
+
+.shop li {
+    padding: 8px 0;
+
+    border-bottom: 1px solid #ddd;
+
+    cursor: pointer;
+}
+
+
+/* ====================
+   チェックボックス
+==================== */
+
+.check {
+    display: inline-block;
+
+    width: 30px;
+
+    font-size: 20px;
+}
+
+.item-name {
+    font-size: 16px;
+}
+
+
+/* チェック済み */
+
+.shop li.checked .check {
+    color: #555;
+}
+
+.shop li.checked .item-name {
+    text-decoration: line-through;
+
+    color: #999;
+}
+
+
+/* ====================
+   店カードの下のボタン
+==================== */
+
+.shop button {
+    border: none;
+    background: none;
+
+    color: #555;
+
+    font-size: 14px;
+
+    padding: 10px 0 0;
+
+    cursor: pointer;
+
+    margin-right: 8px;
+}
+
+
+/* ====================
+   品目追加中
+==================== */
+
+.new-item {
+    width: 150px;
+
+    padding: 6px;
+
+    font-size: 14px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 8px;
+}
+
+.add-ok {
+    background-color: #111 !important;
+    color: white !important;
+
+    border-radius: 8px !important;
+
+    padding: 6px 10px !important;
+
+    margin-left: 5px;
+}
+
+
+/* ====================
+   店追加
+==================== */
+
+.add-shop-button {
+    width: 50px;
+    height: 50px;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: white;
+    color: #111;
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* ====================
+   店名入力
+==================== */
+
+.new-shop-name {
+    width: 150px;
+
+    padding: 8px;
+
+    font-size: 16px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 8px;
+}
+
+.shop-ok {
+    background-color: #111 !important;
+    color: white !important;
+
+    border-radius: 8px !important;
+
+    padding: 8px 12px !important;
+
+    margin-left: 5px;
+}
+
+
+/* ====================
+   店名編集
+==================== */
+
+.edit-shop-name {
+    width: 90%;
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+    padding: 5px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 8px;
+
+    margin-bottom: 10px;
+}
+
+.edit-item-name {
+    width: 150px;
+
+    padding: 5px;
+
+    font-size: 16px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 6px;
+}
+
+.item-name {
+    display: inline-block;
+
+    width: calc(100% - 40px);
+
+    padding: 5px 0;
+
+    cursor: pointer;
+}
+
+.title-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 30px;
+}
+
+.shop-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.title-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.share-button {
+    width: 50px;
+    height: 50px;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: white;
+    color: #111;
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
