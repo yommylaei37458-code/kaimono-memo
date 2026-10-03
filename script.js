@@ -715,10 +715,7 @@ function editItem(itemNameElement) {
             };
 
 
-        // 編集後も長押し並び替えを有効にする
-        const li = newItemName.closest("li");
-
-        enableItemDrag(li);
+        
 
 
         saveShops();
@@ -979,76 +976,77 @@ async function shareShop(button) {
 
 function enableItemDrag(li) {
 
-    const itemNameElement =
-        li.querySelector(".item-name");
+    const itemNameElement = li.querySelector(".item-name");
 
     if (!itemNameElement) {
         return;
     }
 
-
-    let pressTimer = null;
+    let timer = null;
     let dragging = false;
+    let startY = 0;
 
+    // 長押し開始
+    itemNameElement.addEventListener("touchstart", function (event) {
 
-    function startDrag(event) {
+        const touch = event.touches[0];
 
-        // ブラウザの文字選択を止める
-        event.preventDefault();
+        startY = touch.clientY;
 
-        pressTimer = setTimeout(function () {
+        dragging = false;
+
+        timer = setTimeout(function () {
 
             dragging = true;
 
             li.classList.add("dragging");
 
-        }, 500);
+            // 長押しした瞬間から文字選択を解除
+            window.getSelection().removeAllRanges();
 
-    }
+        }, 600);
+
+    }, { passive: true });
 
 
-    function moveDrag(event) {
+    // 指を動かす
+    itemNameElement.addEventListener("touchmove", function (event) {
 
         if (!dragging) {
+
+            clearTimeout(timer);
+
             return;
         }
 
         event.preventDefault();
 
-
         const touch = event.touches[0];
 
-        const x = touch.clientX;
         const y = touch.clientY;
-
 
         const ul = li.parentElement;
 
+        const target = document.elementFromPoint(
+            touch.clientX,
+            y
+        );
 
-        // 指の位置にある要素を探す
-        const target =
-            document.elementFromPoint(x, y);
+        const targetLi = target
+            ? target.closest("li")
+            : null;
 
 
-        const targetLi =
-            target?.closest("li");
-
-
-        // 別のリストには移動しない
         if (
             !targetLi ||
             targetLi === li ||
             targetLi.parentElement !== ul
         ) {
-
             return;
-
         }
 
 
-        const rect =
-            targetLi.getBoundingClientRect();
-
+        const rect = targetLi.getBoundingClientRect();
 
         const middle =
             rect.top + rect.height / 2;
@@ -1070,67 +1068,37 @@ function enableItemDrag(li) {
 
         }
 
-    }
+    }, { passive: false });
 
 
-    function endDrag() {
+    // 指を離す
+    itemNameElement.addEventListener("touchend", function () {
 
-        clearTimeout(pressTimer);
+        clearTimeout(timer);
 
-
-        if (dragging) {
-
-            dragging = false;
-
-            li.classList.remove("dragging");
-
-            saveShops();
-
+        if (!dragging) {
+            return;
         }
 
-    }
+        dragging = false;
+
+        li.classList.remove("dragging");
+
+        saveShops();
+
+    });
 
 
-    /*
-       長押し開始
-    */
+    // キャンセル
+    itemNameElement.addEventListener("touchcancel", function () {
 
-    itemNameElement.addEventListener(
-        "touchstart",
-        startDrag,
-        { passive: false }
-    );
+        clearTimeout(timer);
 
+        dragging = false;
 
-    /*
-       指を動かす
-    */
+        li.classList.remove("dragging");
 
-    itemNameElement.addEventListener(
-        "touchmove",
-        moveDrag,
-        { passive: false }
-    );
-
-
-    /*
-       指を離す
-    */
-
-    itemNameElement.addEventListener(
-        "touchend",
-        endDrag
-    );
-
-
-    /*
-       指が画面外に出た
-    */
-
-    itemNameElement.addEventListener(
-        "touchcancel",
-        endDrag
-    );
+    });
 
 }
 
