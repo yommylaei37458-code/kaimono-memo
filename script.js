@@ -216,23 +216,19 @@ function createShopCard(shop, shopName) {
     shop.innerHTML = `
         <div class="shop-header">
 
-            <h2 class="shop-name">${shopName}</h2>
+            <h2 class="shop-name" onclick="editShop(this)">${shopName}</h2>
 
             <div class="shop-actions">
 
-                <button onclick="editShop(this)">
-                    🖍️
-                </button>
+    <button onclick="deleteShop(this)">
+        🗑️
+    </button>
 
-                <button onclick="deleteShop(this)">
-                    🗑️
-                </button>
+    <button onclick="shareShop(this)">
+        ↗️
+    </button>
 
-                <button onclick="shareShop(this)">
-                    ↗️
-                </button>
-
-            </div>
+</div>
 
         </div>
 

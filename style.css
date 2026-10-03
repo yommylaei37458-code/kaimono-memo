@@ -62,6 +62,12 @@ h1 {
     font-size: 15px;
     flex: 1;
     min-width: 0;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    cursor: pointer;
 }
 
 .shop-actions {
@@ -244,7 +250,7 @@ h1 {
     width: 100%;
     box-sizing: border-box;
 
-    font-size: 22px;
+    font-size: 15px;
     font-weight: bold;
 
     padding: 5px;
@@ -253,6 +259,8 @@ h1 {
     border-radius: 8px;
 
     margin: 0;
+
+    white-space: nowrap;
 }
 
 .edit-item-name {
@@ -261,7 +269,7 @@ h1 {
 
     padding: 5px;
 
-    font-size: 16px;
+    font-size: 10px;
 
     border: 1px solid #ccc;
     border-radius: 6px;
