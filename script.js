@@ -973,7 +973,6 @@ async function shareShop(button) {
 
 }
 
-
 /* ====================
    品目を長押しして並び替え
 ==================== */
@@ -982,7 +981,6 @@ function enableItemDrag(li) {
 
     const itemNameElement =
         li.querySelector(".item-name");
-
 
     if (!itemNameElement) {
         return;
@@ -993,166 +991,149 @@ function enableItemDrag(li) {
     let dragging = false;
 
 
-    let startX = 0;
-    let startY = 0;
+    function startDrag(event) {
+
+        // ブラウザの文字選択を止める
+        event.preventDefault();
+
+        pressTimer = setTimeout(function () {
+
+            dragging = true;
+
+            li.classList.add("dragging");
+
+        }, 500);
+
+    }
 
 
-    // 長押し開始
-    itemNameElement.addEventListener(
-        "pointerdown",
-        function (event) {
+    function moveDrag(event) {
 
-            startX = event.clientX;
-            startY = event.clientY;
+        if (!dragging) {
+            return;
+        }
+
+        event.preventDefault();
+
+
+        const touch = event.touches[0];
+
+        const x = touch.clientX;
+        const y = touch.clientY;
+
+
+        const ul = li.parentElement;
+
+
+        // 指の位置にある要素を探す
+        const target =
+            document.elementFromPoint(x, y);
+
+
+        const targetLi =
+            target?.closest("li");
+
+
+        // 別のリストには移動しない
+        if (
+            !targetLi ||
+            targetLi === li ||
+            targetLi.parentElement !== ul
+        ) {
+
+            return;
+
+        }
+
+
+        const rect =
+            targetLi.getBoundingClientRect();
+
+
+        const middle =
+            rect.top + rect.height / 2;
+
+
+        if (y < middle) {
+
+            ul.insertBefore(
+                li,
+                targetLi
+            );
+
+        } else {
+
+            ul.insertBefore(
+                li,
+                targetLi.nextSibling
+            );
+
+        }
+
+    }
+
+
+    function endDrag() {
+
+        clearTimeout(pressTimer);
+
+
+        if (dragging) {
 
             dragging = false;
-
-
-            pressTimer = setTimeout(function () {
-
-                dragging = true;
-
-                li.classList.add("dragging");
-
-
-                try {
-
-                    itemNameElement.setPointerCapture(
-                        event.pointerId
-                    );
-
-                } catch (e) {}
-
-            }, 500);
-
-        }
-    );
-
-
-    // 指を動かす
-    itemNameElement.addEventListener(
-        "pointermove",
-        function (event) {
-
-            const moveX =
-                Math.abs(event.clientX - startX);
-
-            const moveY =
-                Math.abs(event.clientY - startY);
-
-
-            // 長押し成立前に動かしたらキャンセル
-            if (
-                !dragging &&
-                (moveX > 10 || moveY > 10)
-            ) {
-
-                clearTimeout(pressTimer);
-
-                return;
-
-            }
-
-
-            if (!dragging) {
-                return;
-            }
-
-
-            event.preventDefault();
-
-
-            const ul =
-                li.parentElement;
-
-
-            const target =
-                document.elementFromPoint(
-                    event.clientX,
-                    event.clientY
-                );
-
-
-            const targetLi =
-                target?.closest("li");
-
-
-            if (
-                !targetLi ||
-                targetLi === li ||
-                targetLi.parentElement !== ul
-            ) {
-
-                return;
-
-            }
-
-
-            const rect =
-                targetLi.getBoundingClientRect();
-
-
-            const middle =
-                rect.top + rect.height / 2;
-
-
-            if (event.clientY < middle) {
-
-                ul.insertBefore(
-                    li,
-                    targetLi
-                );
-
-            } else {
-
-                ul.insertBefore(
-                    li,
-                    targetLi.nextSibling
-                );
-
-            }
-
-        }
-    );
-
-
-    // 指を離す
-    itemNameElement.addEventListener(
-        "pointerup",
-        function () {
-
-            clearTimeout(pressTimer);
-
-
-            if (dragging) {
-
-                li.classList.remove("dragging");
-
-                dragging = false;
-
-                saveShops();
-
-            }
-
-        }
-    );
-
-
-    // キャンセル
-    itemNameElement.addEventListener(
-        "pointercancel",
-        function () {
-
-            clearTimeout(pressTimer);
 
             li.classList.remove("dragging");
 
-            dragging = false;
+            saveShops();
 
         }
+
+    }
+
+
+    /*
+       長押し開始
+    */
+
+    itemNameElement.addEventListener(
+        "touchstart",
+        startDrag,
+        { passive: false }
+    );
+
+
+    /*
+       指を動かす
+    */
+
+    itemNameElement.addEventListener(
+        "touchmove",
+        moveDrag,
+        { passive: false }
+    );
+
+
+    /*
+       指を離す
+    */
+
+    itemNameElement.addEventListener(
+        "touchend",
+        endDrag
+    );
+
+
+    /*
+       指が画面外に出た
+    */
+
+    itemNameElement.addEventListener(
+        "touchcancel",
+        endDrag
     );
 
 }
+
 
 
 /* ====================
