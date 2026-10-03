@@ -64,11 +64,11 @@ function addItem(button) {
             <span class="item-name">${itemName}</span>
         `;
 
-
         const check = li.querySelector(".check");
         const itemNameElement = li.querySelector(".item-name");
 
 
+        // チェック部分
         check.onclick = function (event) {
 
             event.stopPropagation();
@@ -78,20 +78,25 @@ function addItem(button) {
         };
 
 
-        onclick = function (event) {
+        // 品目部分 → 編集
+        itemNameElement.onclick = function (event) {
 
-            event.stoitemNameElement.pPropagation();
+            event.stopPropagation();
 
             editItem(itemNameElement);
 
         };
 
 
+        // 長押し並び替え
+        enableItemDrag(li);
+
+
         saveShops();
     }
 
 
-    // 「追加」ボタンをクリック
+    // 「追加」ボタン
     addButton.onclick = function (event) {
 
         event.stopPropagation();
@@ -101,7 +106,7 @@ function addItem(button) {
     };
 
 
-    // Enterキーでも追加
+    // Enterでも追加
     input.addEventListener("keydown", function (event) {
 
         if (event.key === "Enter") {
@@ -114,6 +119,7 @@ function addItem(button) {
 
     });
 }
+
 
 /* ====================
    店を追加する
@@ -143,7 +149,6 @@ function addShop() {
 
 
     // 高さが低いほうの列に追加
-
     if (leftColumn.scrollHeight <= rightColumn.scrollHeight) {
 
         leftColumn.appendChild(shop);
@@ -162,7 +167,6 @@ function addShop() {
 
 
     // 店を追加する処理
-
     function addNewShop() {
 
         const shopName = input.value.trim();
@@ -171,7 +175,6 @@ function addShop() {
             return;
         }
 
-
         createShopCard(shop, shopName);
 
         saveShops();
@@ -179,8 +182,7 @@ function addShop() {
     }
 
 
-    // 「追加」ボタンをクリック
-
+    // クリック
     addButton.onclick = function (event) {
 
         event.stopPropagation();
@@ -190,8 +192,7 @@ function addShop() {
     };
 
 
-    // Enterキーでも追加
-
+    // Enter
     input.addEventListener("keydown", function (event) {
 
         if (event.key === "Enter") {
@@ -235,10 +236,8 @@ function createShopCard(shop, shopName) {
 
         </div>
 
-
         <ul>
         </ul>
-
 
         <div class="shop-footer">
 
@@ -267,8 +266,6 @@ function removeChecked(button) {
         shop.querySelectorAll("li.checked");
 
 
-    // チェックされた商品がない場合
-
     if (checkedItems.length === 0) {
 
         alert("買ったものがありません");
@@ -277,22 +274,16 @@ function removeChecked(button) {
     }
 
 
-    // 確認
-
     const result = confirm(
         "チェックした商品を削除しますか？"
     );
 
-
-    // キャンセル
 
     if (!result) {
 
         return;
     }
 
-
-    // OK
 
     checkedItems.forEach(function (item) {
 
@@ -497,11 +488,6 @@ function loadShops() {
         document.querySelector("#right-column");
 
 
-    /*
-       保存データがない場合は
-       最初のサンプルを作る
-    */
-
     let shops;
 
 
@@ -541,18 +527,9 @@ function loadShops() {
     }
 
 
-    /*
-       既存のカードをいったん空にする
-    */
-
     leftColumn.innerHTML = "";
     rightColumn.innerHTML = "";
 
-
-    /*
-       保存されていた店を
-       順番にカード化
-    */
 
     shops.forEach(function (shopData) {
 
@@ -569,11 +546,6 @@ function loadShops() {
         );
 
 
-        /*
-           左右のうち
-           現在高さが低いほうへ入れる
-        */
-
         if (
             leftColumn.scrollHeight
             <=
@@ -589,10 +561,6 @@ function loadShops() {
         }
 
 
-        /*
-           商品を復元
-        */
-
         const ul =
             shop.querySelector("ul");
 
@@ -605,7 +573,6 @@ function loadShops() {
 
 
                 li.innerHTML = `
-
                     <span class="check">
                         ${itemData.checked ? "☑" : "□"}
                     </span>
@@ -613,7 +580,6 @@ function loadShops() {
                     <span class="item-name">
                         ${itemData.name}
                     </span>
-
                 `;
 
 
@@ -631,6 +597,7 @@ function loadShops() {
                     li.querySelector(".item-name");
 
 
+                // チェック
                 check.onclick = function (event) {
 
                     event.stopPropagation();
@@ -640,17 +607,18 @@ function loadShops() {
                 };
 
 
+                // 編集
                 itemNameElement.onclick = function (event) {
 
-    event.stopPropagation();
+                    event.stopPropagation();
 
-    editItem(itemNameElement);
+                    editItem(itemNameElement);
 
-};
+                };
 
-enableItemDrag(li);
 
-saveShops();
+                // 長押し並び替え
+                enableItemDrag(li);
 
 
                 ul.appendChild(li);
@@ -697,10 +665,7 @@ function editItem(itemNameElement) {
     let finished = false;
 
 
-    /*
-       編集を確定する
-    */
-
+    // 編集を確定
     function saveItemName() {
 
         if (cancelled || finished) {
@@ -750,16 +715,19 @@ function editItem(itemNameElement) {
             };
 
 
+        // 編集後も長押し並び替えを有効にする
+        const li = newItemName.closest("li");
+
+        enableItemDrag(li);
+
+
         saveShops();
 
     }
 
 
-    /*
-       Enter → 確定
-       Esc → キャンセル
-    */
-
+    // Enter → 確定
+    // Esc → キャンセル
     input.addEventListener(
         "keydown",
         function (event) {
@@ -790,15 +758,11 @@ function editItem(itemNameElement) {
 
                 itemNameElement.onclick = function (event) {
 
-    event.stopPropagation();
+                    event.stopPropagation();
 
-    editItem(itemNameElement);
+                    editItem(itemNameElement);
 
-};
-
-enableItemDrag(li);
-
-ul.appendChild(li);
+                };
 
             }
 
@@ -806,10 +770,7 @@ ul.appendChild(li);
     );
 
 
-    /*
-       編集欄から離れたら確定
-    */
-
+    // 編集欄から離れたら確定
     input.addEventListener(
         "blur",
         function () {
@@ -860,8 +821,6 @@ async function shareShoppingMemo() {
                 .querySelectorAll("li")
                 .forEach(function (item) {
 
-
-                    // 買ったものは共有しない
 
                     if (
                         item.classList.contains("checked")
@@ -956,8 +915,6 @@ async function shareShop(button) {
         .forEach(function (item) {
 
 
-            // 買ったものは共有しない
-
             if (
                 item.classList.contains("checked")
             ) {
@@ -1026,18 +983,21 @@ function enableItemDrag(li) {
     const itemNameElement =
         li.querySelector(".item-name");
 
+
     if (!itemNameElement) {
         return;
     }
 
+
     let pressTimer = null;
     let dragging = false;
+
+
     let startX = 0;
     let startY = 0;
 
 
-    /* 長押し開始 */
-
+    // 長押し開始
     itemNameElement.addEventListener(
         "pointerdown",
         function (event) {
@@ -1047,16 +1007,20 @@ function enableItemDrag(li) {
 
             dragging = false;
 
+
             pressTimer = setTimeout(function () {
 
                 dragging = true;
 
                 li.classList.add("dragging");
 
+
                 try {
+
                     itemNameElement.setPointerCapture(
                         event.pointerId
                     );
+
                 } catch (e) {}
 
             }, 500);
@@ -1065,8 +1029,7 @@ function enableItemDrag(li) {
     );
 
 
-    /* 指を動かす */
-
+    // 指を動かす
     itemNameElement.addEventListener(
         "pointermove",
         function (event) {
@@ -1078,16 +1041,16 @@ function enableItemDrag(li) {
                 Math.abs(event.clientY - startY);
 
 
-            /*
-               長押し成立前に
-               少し動かしたらキャンセル
-            */
-
-            if (!dragging && (moveX > 10 || moveY > 10)) {
+            // 長押し成立前に動かしたらキャンセル
+            if (
+                !dragging &&
+                (moveX > 10 || moveY > 10)
+            ) {
 
                 clearTimeout(pressTimer);
 
                 return;
+
             }
 
 
@@ -1099,7 +1062,9 @@ function enableItemDrag(li) {
             event.preventDefault();
 
 
-            const ul = li.parentElement;
+            const ul =
+                li.parentElement;
+
 
             const target =
                 document.elementFromPoint(
@@ -1117,7 +1082,9 @@ function enableItemDrag(li) {
                 targetLi === li ||
                 targetLi.parentElement !== ul
             ) {
+
                 return;
+
             }
 
 
@@ -1149,8 +1116,7 @@ function enableItemDrag(li) {
     );
 
 
-    /* 指を離す */
-
+    // 指を離す
     itemNameElement.addEventListener(
         "pointerup",
         function () {
@@ -1172,8 +1138,7 @@ function enableItemDrag(li) {
     );
 
 
-    /* キャンセル */
-
+    // キャンセル
     itemNameElement.addEventListener(
         "pointercancel",
         function () {
@@ -1186,7 +1151,9 @@ function enableItemDrag(li) {
 
         }
     );
+
 }
+
 
 /* ====================
    アプリ起動

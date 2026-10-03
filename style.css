@@ -325,5 +325,5 @@ h1 {
 }
 
 .item-name {
-    touch-action: manipulation;
+    touch-action: none;
 }
