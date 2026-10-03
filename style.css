@@ -310,3 +310,20 @@ h1 {
     align-items: center;
     justify-content: center;
 }
+
+/* ====================
+   品目の並び替え
+==================== */
+
+.shop li.dragging {
+    opacity: 0.5;
+    border: 2px dashed #999;
+}
+
+.shop li {
+    user-select: none;
+}
+
+.item-name {
+    touch-action: manipulation;
+}

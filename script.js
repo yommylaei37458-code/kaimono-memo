@@ -50,9 +50,8 @@ function addItem(button) {
     input.focus();
 
 
-    addButton.onclick = function (event) {
-
-        event.stopPropagation();
+    // 品目を追加する処理
+    function addNewItem() {
 
         const itemName = input.value.trim();
 
@@ -79,9 +78,9 @@ function addItem(button) {
         };
 
 
-        itemNameElement.onclick = function (event) {
+        onclick = function (event) {
 
-            event.stopPropagation();
+            event.stoitemNameElement.pPropagation();
 
             editItem(itemNameElement);
 
@@ -89,10 +88,32 @@ function addItem(button) {
 
 
         saveShops();
+    }
+
+
+    // 「追加」ボタンをクリック
+    addButton.onclick = function (event) {
+
+        event.stopPropagation();
+
+        addNewItem();
 
     };
-}
 
+
+    // Enterキーでも追加
+    input.addEventListener("keydown", function (event) {
+
+        if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            addNewItem();
+
+        }
+
+    });
+}
 
 /* ====================
    店を追加する
@@ -121,9 +142,7 @@ function addShop() {
     `;
 
 
-    /*
-       高さが低いほうの列に追加
-    */
+    // 高さが低いほうの列に追加
 
     if (leftColumn.scrollHeight <= rightColumn.scrollHeight) {
 
@@ -142,9 +161,9 @@ function addShop() {
     input.focus();
 
 
-    addButton.onclick = function (event) {
+    // 店を追加する処理
 
-        event.stopPropagation();
+    function addNewShop() {
 
         const shopName = input.value.trim();
 
@@ -157,7 +176,33 @@ function addShop() {
 
         saveShops();
 
+    }
+
+
+    // 「追加」ボタンをクリック
+
+    addButton.onclick = function (event) {
+
+        event.stopPropagation();
+
+        addNewShop();
+
     };
+
+
+    // Enterキーでも追加
+
+    input.addEventListener("keydown", function (event) {
+
+        if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            addNewShop();
+
+        }
+
+    });
 }
 
 
@@ -597,11 +642,15 @@ function loadShops() {
 
                 itemNameElement.onclick = function (event) {
 
-                    event.stopPropagation();
+    event.stopPropagation();
 
-                    editItem(itemNameElement);
+    editItem(itemNameElement);
 
-                };
+};
+
+enableItemDrag(li);
+
+saveShops();
 
 
                 ul.appendChild(li);
@@ -739,14 +788,17 @@ function editItem(itemNameElement) {
                 );
 
 
-                itemNameElement.onclick =
-                    function (event) {
+                itemNameElement.onclick = function (event) {
 
-                        event.stopPropagation();
+    event.stopPropagation();
 
-                        editItem(itemNameElement);
+    editItem(itemNameElement);
 
-                    };
+};
+
+enableItemDrag(li);
+
+ul.appendChild(li);
 
             }
 
@@ -964,6 +1016,177 @@ async function shareShop(button) {
 
 }
 
+
+/* ====================
+   品目を長押しして並び替え
+==================== */
+
+function enableItemDrag(li) {
+
+    const itemNameElement =
+        li.querySelector(".item-name");
+
+    if (!itemNameElement) {
+        return;
+    }
+
+    let pressTimer = null;
+    let dragging = false;
+    let startX = 0;
+    let startY = 0;
+
+
+    /* 長押し開始 */
+
+    itemNameElement.addEventListener(
+        "pointerdown",
+        function (event) {
+
+            startX = event.clientX;
+            startY = event.clientY;
+
+            dragging = false;
+
+            pressTimer = setTimeout(function () {
+
+                dragging = true;
+
+                li.classList.add("dragging");
+
+                try {
+                    itemNameElement.setPointerCapture(
+                        event.pointerId
+                    );
+                } catch (e) {}
+
+            }, 500);
+
+        }
+    );
+
+
+    /* 指を動かす */
+
+    itemNameElement.addEventListener(
+        "pointermove",
+        function (event) {
+
+            const moveX =
+                Math.abs(event.clientX - startX);
+
+            const moveY =
+                Math.abs(event.clientY - startY);
+
+
+            /*
+               長押し成立前に
+               少し動かしたらキャンセル
+            */
+
+            if (!dragging && (moveX > 10 || moveY > 10)) {
+
+                clearTimeout(pressTimer);
+
+                return;
+            }
+
+
+            if (!dragging) {
+                return;
+            }
+
+
+            event.preventDefault();
+
+
+            const ul = li.parentElement;
+
+            const target =
+                document.elementFromPoint(
+                    event.clientX,
+                    event.clientY
+                );
+
+
+            const targetLi =
+                target?.closest("li");
+
+
+            if (
+                !targetLi ||
+                targetLi === li ||
+                targetLi.parentElement !== ul
+            ) {
+                return;
+            }
+
+
+            const rect =
+                targetLi.getBoundingClientRect();
+
+
+            const middle =
+                rect.top + rect.height / 2;
+
+
+            if (event.clientY < middle) {
+
+                ul.insertBefore(
+                    li,
+                    targetLi
+                );
+
+            } else {
+
+                ul.insertBefore(
+                    li,
+                    targetLi.nextSibling
+                );
+
+            }
+
+        }
+    );
+
+
+    /* 指を離す */
+
+    itemNameElement.addEventListener(
+        "pointerup",
+        function () {
+
+            clearTimeout(pressTimer);
+
+
+            if (dragging) {
+
+                li.classList.remove("dragging");
+
+                dragging = false;
+
+                saveShops();
+
+            }
+
+        }
+    );
+
+
+    /* キャンセル */
+
+    itemNameElement.addEventListener(
+        "pointercancel",
+        function () {
+
+            clearTimeout(pressTimer);
+
+            li.classList.remove("dragging");
+
+            dragging = false;
+
+        }
+    );
+}
 
 /* ====================
    アプリ起動
