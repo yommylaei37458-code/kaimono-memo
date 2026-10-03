@@ -28,7 +28,8 @@ function checkItem(item) {
 
 function addItem(button) {
 
-const ul = button.closest(".shop").querySelector("ul");
+    const ul = button.closest(".shop").querySelector("ul");
+
     const li = document.createElement("li");
 
     li.innerHTML = `
@@ -44,7 +45,6 @@ const ul = button.closest(".shop").querySelector("ul");
     ul.appendChild(li);
 
     const input = li.querySelector(".new-item");
-
     const addButton = li.querySelector(".add-ok");
 
     input.focus();
@@ -60,31 +60,32 @@ const ul = button.closest(".shop").querySelector("ul");
             return;
         }
 
-
         li.innerHTML = `
             <span class="check">□</span>
             <span class="item-name">${itemName}</span>
         `;
 
 
-       const check = li.querySelector(".check");
-const itemNameElement = li.querySelector(".item-name");
+        const check = li.querySelector(".check");
+        const itemNameElement = li.querySelector(".item-name");
 
-check.onclick = function (event) {
 
-    event.stopPropagation();
+        check.onclick = function (event) {
 
-    checkItem(li);
+            event.stopPropagation();
 
-};
+            checkItem(li);
 
-itemNameElement.onclick = function (event) {
+        };
 
-    event.stopPropagation();
 
-    editItem(itemNameElement);
+        itemNameElement.onclick = function (event) {
 
-};
+            event.stopPropagation();
+
+            editItem(itemNameElement);
+
+        };
 
 
         saveShops();
@@ -100,9 +101,7 @@ itemNameElement.onclick = function (event) {
 function addShop() {
 
     const leftColumn = document.querySelector("#left-column");
-
     const rightColumn = document.querySelector("#right-column");
-
 
     const shop = document.createElement("div");
 
@@ -138,9 +137,7 @@ function addShop() {
 
 
     const input = shop.querySelector(".new-shop-name");
-
     const addButton = shop.querySelector(".shop-ok");
-
 
     input.focus();
 
@@ -171,15 +168,27 @@ function addShop() {
 function createShopCard(shop, shopName) {
 
     shop.innerHTML = `
-    <div class="shop-header">
-        <h2 class="shop-name">${shopData.name}</h2>
+        <div class="shop-header">
 
-        <div class="shop-actions">
-            <button onclick="editShop(this)">🖍️</button>
-            <button onclick="deleteShop(this)">🗑️</button>
-            <button onclick="shareShop(this)">↗️</button>
+            <h2 class="shop-name">${shopName}</h2>
+
+            <div class="shop-actions">
+
+                <button onclick="editShop(this)">
+                    🖍️
+                </button>
+
+                <button onclick="deleteShop(this)">
+                    🗑️
+                </button>
+
+                <button onclick="shareShop(this)">
+                    ↗️
+                </button>
+
+            </div>
+
         </div>
-    </div>
 
 
         <ul>
@@ -187,10 +196,16 @@ function createShopCard(shop, shopName) {
 
 
         <div class="shop-footer">
-    <button onclick="addItem(this)">＋ 追加</button>
-    <button onclick="removeChecked(this)">🧹 削除</button>
-</div>
 
+            <button onclick="addItem(this)">
+                ＋ 追加
+            </button>
+
+            <button onclick="removeChecked(this)">
+                🧹 削除
+            </button>
+
+        </div>
     `;
 }
 
@@ -203,9 +218,12 @@ function removeChecked(button) {
 
     const shop = button.closest(".shop");
 
-    const checkedItems = shop.querySelectorAll("li.checked");
+    const checkedItems =
+        shop.querySelectorAll("li.checked");
+
 
     // チェックされた商品がない場合
+
     if (checkedItems.length === 0) {
 
         alert("買ったものがありません");
@@ -213,23 +231,30 @@ function removeChecked(button) {
         return;
     }
 
+
     // 確認
+
     const result = confirm(
         "チェックした商品を削除しますか？"
     );
 
+
     // キャンセル
+
     if (!result) {
 
         return;
     }
 
+
     // OK
+
     checkedItems.forEach(function (item) {
 
         item.remove();
 
     });
+
 
     saveShops();
 }
@@ -380,7 +405,8 @@ function saveShops() {
 
                     items.push({
 
-                        name: itemName.textContent,
+                        name:
+                            itemName.textContent.trim(),
 
                         checked:
                             item.classList.contains("checked")
@@ -392,7 +418,8 @@ function saveShops() {
 
             shops.push({
 
-                name: shopName.textContent,
+                name:
+                    shopName.textContent.trim(),
 
                 items: items
 
@@ -470,12 +497,19 @@ function loadShops() {
 
 
     /*
+       既存のカードをいったん空にする
+    */
+
+    leftColumn.innerHTML = "";
+    rightColumn.innerHTML = "";
+
+
+    /*
        保存されていた店を
        順番にカード化
     */
 
     shops.forEach(function (shopData) {
-
 
         const shop =
             document.createElement("div");
@@ -521,7 +555,6 @@ function loadShops() {
         shopData.items.forEach(
             function (itemData) {
 
-
                 const li =
                     document.createElement("li");
 
@@ -546,26 +579,29 @@ function loadShops() {
                 }
 
 
-                const check = li.querySelector(".check");
-const itemNameElement = li.querySelector(".item-name");
+                const check =
+                    li.querySelector(".check");
+
+                const itemNameElement =
+                    li.querySelector(".item-name");
 
 
-check.onclick = function (event) {
+                check.onclick = function (event) {
 
-    event.stopPropagation();
+                    event.stopPropagation();
 
-    checkItem(li);
+                    checkItem(li);
 
-};
+                };
 
 
-itemNameElement.onclick = function (event) {
+                itemNameElement.onclick = function (event) {
 
-    event.stopPropagation();
+                    event.stopPropagation();
 
-    editItem(itemNameElement);
+                    editItem(itemNameElement);
 
-};
+                };
 
 
                 ul.appendChild(li);
@@ -579,200 +615,358 @@ itemNameElement.onclick = function (event) {
 
 
 /* ====================
-   アプリ起動
+   商品名を編集
 ==================== */
-
-loadShops();
 
 function editItem(itemNameElement) {
 
-    const oldName = itemNameElement.textContent.trim();
+    const oldName =
+        itemNameElement.textContent.trim();
 
-    const input = document.createElement("input");
+
+    const input =
+        document.createElement("input");
+
 
     input.type = "text";
+
     input.value = oldName;
+
     input.className = "edit-item-name";
+
 
     itemNameElement.replaceWith(input);
 
+
     input.focus();
+
     input.select();
+
 
     let cancelled = false;
 
+    let finished = false;
 
-    // 編集を確定する
+
+    /*
+       編集を確定する
+    */
+
     function saveItemName() {
 
-        // Escでキャンセル済みなら何もしない
-        if (cancelled) {
+        if (cancelled || finished) {
+
             return;
+
         }
 
-        const newName = input.value.trim();
+
+        const newName =
+            input.value.trim();
+
 
         if (newName === "") {
 
             input.value = oldName;
+
             input.focus();
 
             return;
+
         }
+
+
+        finished = true;
+
 
         const newItemName =
             document.createElement("span");
+
 
         newItemName.className = "item-name";
 
         newItemName.textContent = newName;
 
+
         input.replaceWith(newItemName);
 
 
-        newItemName.onclick = function (event) {
-
-            event.stopPropagation();
-
-            editItem(newItemName);
-
-        };
-
-
-        saveShops();
-    }
-
-
-    // Enter → 確定
-    input.addEventListener("keydown", function (event) {
-
-        if (event.key === "Enter") {
-
-            event.preventDefault();
-
-            saveItemName();
-
-        }
-
-
-        // Esc → キャンセル
-        if (event.key === "Escape") {
-
-            event.preventDefault();
-
-            cancelled = true;
-
-            input.replaceWith(itemNameElement);
-
-
-            itemNameElement.onclick = function (event) {
+        newItemName.onclick =
+            function (event) {
 
                 event.stopPropagation();
 
-                editItem(itemNameElement);
+                editItem(newItemName);
 
             };
 
+
+        saveShops();
+
+    }
+
+
+    /*
+       Enter → 確定
+       Esc → キャンセル
+    */
+
+    input.addEventListener(
+        "keydown",
+        function (event) {
+
+
+            if (event.key === "Enter") {
+
+                event.preventDefault();
+
+                saveItemName();
+
+            }
+
+
+            if (event.key === "Escape") {
+
+                event.preventDefault();
+
+                cancelled = true;
+
+                finished = true;
+
+
+                input.replaceWith(
+                    itemNameElement
+                );
+
+
+                itemNameElement.onclick =
+                    function (event) {
+
+                        event.stopPropagation();
+
+                        editItem(itemNameElement);
+
+                    };
+
+            }
+
         }
+    );
 
-    });
 
+    /*
+       編集欄から離れたら確定
+    */
 
-    // 編集欄から離れたら確定
-    input.addEventListener("blur", function () {
+    input.addEventListener(
+        "blur",
+        function () {
 
-        if (!cancelled) {
+            if (!cancelled && !finished) {
 
-            saveItemName();
+                saveItemName();
+
+            }
 
         }
-
-    });
+    );
 
 }
 
+
+/* ====================
+   全部の買い物メモを共有
+==================== */
+
 async function shareShoppingMemo() {
 
-    let text = "🛒 買い物メモ\n\n";
+    let text =
+        "🛒 買い物メモ\n\n";
 
-    document.querySelectorAll(".shop").forEach(function (shop) {
 
-        const shopName = shop.querySelector(".shop-name");
+    document
+        .querySelectorAll(".shop")
+        .forEach(function (shop) {
 
-        if (!shopName) {
-            return;
-        }
 
-        text += "【" + shopName.textContent.trim() + "】\n";
+            const shopName =
+                shop.querySelector(".shop-name");
 
-        shop.querySelectorAll("li").forEach(function (item) {
 
-            if (item.classList.contains("checked")) {
+            if (!shopName) {
                 return;
             }
 
-            const itemName = item.querySelector(".item-name");
 
-            if (!itemName) {
-                return;
-            }
+            text +=
+                "【"
+                + shopName.textContent.trim()
+                + "】\n";
 
-           text += "□ " + itemName.textContent.trim() + "\n";
+
+            shop
+                .querySelectorAll("li")
+                .forEach(function (item) {
+
+
+                    // 買ったものは共有しない
+
+                    if (
+                        item.classList.contains("checked")
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const itemName =
+                        item.querySelector(".item-name");
+
+
+                    if (!itemName) {
+                        return;
+                    }
+
+
+                    text +=
+                        "□ "
+                        + itemName.textContent.trim()
+                        + "\n";
+
+                });
+
+
+            text += "\n";
 
         });
-
-        text += "\n";
-
-    });
 
 
     if (navigator.share) {
 
-        await navigator.share({
-            title: "買い物メモ",
-            text: text
-        });
+        try {
+
+            await navigator.share({
+
+                title: "買い物メモ",
+
+                text: text
+
+            });
+
+        } catch (error) {
+
+            console.log(
+                "共有をキャンセルしました"
+            );
+
+        }
 
     } else {
 
         await navigator.clipboard.writeText(text);
 
-        alert("買い物メモをコピーしました！");
+        alert(
+            "買い物メモをコピーしました！"
+        );
 
     }
 
 }
+
+
+/* ====================
+   店ごとの買い物メモを共有
+==================== */
 
 async function shareShop(button) {
-    const shop = button.closest(".shop");
-    const shopName = shop.querySelector(".shop-name").textContent;
 
-    let text = "🛒 買い物メモ\n\n";
-    text += "【" + shopName + "】\n";
+    const shop =
+        button.closest(".shop");
 
-    shop.querySelectorAll("li").forEach(function (item) {
-        const itemName = item.querySelector(".item-name");
 
-        if (!itemName) {
-            return;
-        }
+    const shopName =
+        shop.querySelector(".shop-name");
 
-        const checked = item.classList.contains("checked");
 
-        text += (checked ? "☑ " : "□ ") + itemName.textContent + "\n";
-    });
+    let text =
+        "🛒 買い物メモ\n\n";
+
+
+    text +=
+        "【"
+        + shopName.textContent.trim()
+        + "】\n";
+
+
+    shop
+        .querySelectorAll("li")
+        .forEach(function (item) {
+
+
+            // 買ったものは共有しない
+
+            if (
+                item.classList.contains("checked")
+            ) {
+
+                return;
+
+            }
+
+
+            const itemName =
+                item.querySelector(".item-name");
+
+
+            if (!itemName) {
+                return;
+            }
+
+
+            text +=
+                "□ "
+                + itemName.textContent.trim()
+                + "\n";
+
+        });
+
 
     if (navigator.share) {
+
         try {
+
             await navigator.share({
+
                 title: "買い物メモ",
+
                 text: text
+
             });
+
         } catch (error) {
-            console.log("共有をキャンセルしました");
+
+            console.log(
+                "共有をキャンセルしました"
+            );
+
         }
+
     } else {
-        navigator.clipboard.writeText(text);
-        alert("コピーしました！");
+
+        await navigator.clipboard.writeText(text);
+
+        alert(
+            "この店の買い物メモをコピーしました！"
+        );
+
     }
+
 }
+
+
+/* ====================
+   アプリ起動
+==================== */
+
+loadShops();
