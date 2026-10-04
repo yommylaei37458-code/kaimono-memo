@@ -112,11 +112,42 @@ h1 {
 ==================== */
 
 .check {
-    display: inline-block;
+    display: inline-flex;
 
-    width: 30px;
+    width: 22px;
+    height: 22px;
 
-    font-size: 15px;
+    border: 2px solid #555;
+    border-radius: 4px;
+
+    box-sizing: border-box;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 12px;
+
+    flex-shrink: 0;
+
+    vertical-align: middle;
+}
+
+/* チェックされたとき */
+
+.shop li.checked .check {
+    background-color: #777;
+    border-color: #777;
+}
+
+.shop li.checked .check::after {
+    content: "✓";
+
+    color: white;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    line-height: 1;
 }
 
 .item-name {
@@ -127,7 +158,8 @@ h1 {
 /* チェック済み */
 
 .shop li.checked .check {
-    color: #555;
+    background-color: #777;
+    border-color: #777;
 }
 
 .shop li.checked .item-name {
@@ -278,9 +310,11 @@ h1 {
 .item-name {
     display: inline-block;
 
-    width: calc(100% - 40px);
+    width: calc(100% - 36px);
 
     padding: 5px 0;
+
+    box-sizing: border-box;
 
     cursor: pointer;
 
@@ -289,6 +323,8 @@ h1 {
     -webkit-touch-callout: none;
 
     touch-action: none;
+
+    vertical-align: middle;
 }
 
 .shop li.dragging {
@@ -350,9 +386,83 @@ h1 {
     user-select: none;
 }
 
+/* ====================
+   チェックと品名を横並びにする
+==================== */
+
+.shop li {
+    display: flex;
+    align-items: center;
+}
+
+.check {
+    display: inline-flex;
+
+    width: 22px;
+    height: 22px;
+
+    flex: 0 0 22px;
+
+    border: 2px solid #555;
+    border-radius: 4px;
+
+    box-sizing: border-box;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 12px;
+}
+
 .item-name {
-    touch-action: none;
+    display: block;
+
+    width: auto;
+    flex: 1;
+
+    padding: 5px 0;
+
+    box-sizing: border-box;
+
+    cursor: pointer;
+
     user-select: none;
     -webkit-user-select: none;
     -webkit-touch-callout: none;
+
+    touch-action: none;
+}
+
+/* チェック済み */
+
+.shop li.checked .check {
+    background-color: #777;
+    border-color: #777;
+}
+
+.shop li.checked .check::after {
+    content: "✓";
+
+    color: white;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    line-height: 1;
+}
+
+/* 品目編集中 */
+
+.edit-item-name {
+    flex: 1;
+    width: auto;
+
+    box-sizing: border-box;
+
+    padding: 5px;
+
+    font-size: 10px;
+
+    border: 1px solid #ccc;
+    border-radius: 6px;
 }

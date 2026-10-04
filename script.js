@@ -6,18 +6,6 @@ function checkItem(item) {
 
     item.classList.toggle("checked");
 
-    const check = item.querySelector(".check");
-
-    if (item.classList.contains("checked")) {
-
-        check.textContent = "☑";
-
-    } else {
-
-        check.textContent = "□";
-
-    }
-
     saveShops();
 }
 
@@ -33,7 +21,7 @@ function addItem(button) {
     const li = document.createElement("li");
 
     li.innerHTML = `
-        <span class="check">□</span>
+        <span class="check"></span>
         <input
             type="text"
             class="new-item"
@@ -569,14 +557,12 @@ function loadShops() {
 
 
                 li.innerHTML = `
-                    <span class="check">
-                        ${itemData.checked ? "☑" : "□"}
-                    </span>
+    <span class="check"></span>
 
-                    <span class="item-name">
-                        ${itemData.name}
-                    </span>
-                `;
+    <span class="item-name">
+        ${itemData.name}
+    </span>
+`;
 
 
                 if (itemData.checked) {
