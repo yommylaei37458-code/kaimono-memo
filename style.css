@@ -398,10 +398,10 @@ h1 {
 .check {
     display: inline-flex;
 
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
 
-    flex: 0 0 22px;
+    flex: 0 0 18px;
 
     border: 2px solid #555;
     border-radius: 4px;
@@ -445,7 +445,7 @@ h1 {
 
     color: white;
 
-    font-size: 16px;
+    font-size: 13px;
     font-weight: bold;
 
     line-height: 1;
