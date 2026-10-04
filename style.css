@@ -114,11 +114,13 @@ h1 {
 .check {
     display: inline-flex;
 
-    width: 22px;
-    height: 22px;
+    width: 13px;
+    height: 13px;
+
+    flex: 0 0 13px;
 
     border: 2px solid #555;
-    border-radius: 4px;
+    border-radius: 3px;
 
     box-sizing: border-box;
 
@@ -127,31 +129,21 @@ h1 {
 
     margin-right: 12px;
 
-    flex-shrink: 0;
-
-    vertical-align: middle;
+    font-size: 0;
 }
 
-/* チェックされたとき */
 
-.shop li.checked .check {
-    background-color: #777;
-    border-color: #777;
-}
+/* チェックが入ったとき */
 
 .shop li.checked .check::after {
     content: "✓";
 
-    color: white;
+    color: #555;
 
-    font-size: 16px;
+    font-size: 13px;
     font-weight: bold;
 
     line-height: 1;
-}
-
-.item-name {
-    font-size: 10px;
 }
 
 
@@ -398,10 +390,10 @@ h1 {
 .check {
     display: inline-flex;
 
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
 
-    flex: 0 0 18px;
+    flex: 0 0 16px;
 
     border: 2px solid #555;
     border-radius: 4px;
@@ -445,7 +437,7 @@ h1 {
 
     color: white;
 
-    font-size: 13px;
+    font-size: 11px;
     font-weight: bold;
 
     line-height: 1;
@@ -465,4 +457,24 @@ h1 {
 
     border: 1px solid #ccc;
     border-radius: 6px;
+}
+
+.item-name {
+    display: inline-block;
+
+    width: calc(100% - 30px);
+
+    padding: 5px 0;
+
+    font-size: 10px;
+
+    cursor: pointer;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+
+    touch-action: none;
+
+    vertical-align: middle;
 }

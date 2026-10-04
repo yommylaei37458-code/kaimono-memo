@@ -48,9 +48,9 @@ function addItem(button) {
         }
 
         li.innerHTML = `
-            <span class="check">□</span>
-            <span class="item-name">${itemName}</span>
-        `;
+    <span class="check"></span>
+    <span class="item-name">${itemName}</span>
+`;
 
         const check = li.querySelector(".check");
         const itemNameElement = li.querySelector(".item-name");
