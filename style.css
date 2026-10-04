@@ -51,7 +51,7 @@ h1 {
 
 .shop-header {
     display: flex;
-    align-items: baseline;
+    align-items: flex-end;
     justify-content: space-between;
     gap: 10px;
 }
@@ -72,12 +72,13 @@ h1 {
 .shop-actions {
     display: flex;
     gap: 5px;
+    align-items: flex-end;
 }
 
 .shop-actions button {
     border: none;
     background: none;
-
+    line-height: 1;
     padding: 2px;
 
     font-size: 12px;
