@@ -51,9 +51,8 @@ h1 {
 
 .shop-header {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
-
     gap: 10px;
 }
 
@@ -99,7 +98,7 @@ h1 {
 }
 
 .shop li {
-    padding: 8px 0;
+    padding: 5px 0;
 
     border-bottom: 1px solid #ddd;
 
