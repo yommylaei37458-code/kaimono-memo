@@ -820,7 +820,7 @@ async function shareShoppingMemo() {
 
 
                     text +=
-                        "□ "
+                        ""
                         + itemName.textContent.trim()
                         + "\n";
 
@@ -913,7 +913,7 @@ async function shareShop(button) {
 
 
             text +=
-                "□ "
+                ""
                 + itemName.textContent.trim()
                 + "\n";
 
